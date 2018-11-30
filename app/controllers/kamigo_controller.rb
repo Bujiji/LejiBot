@@ -11,14 +11,12 @@ class KamigoController < ApplicationController
   			# 取得 reply token
   			reply_token = params['events'][0]['replyToken']
 
-  			p "================="
-  			p reply_token
-  			p "================="
+
 
   			# 設定回覆訊息
  			 message = {
     		type: 'text',
-    		text: '好哦～好哦～'
+    		text: t
   			}
 
  			# 傳送訊息
@@ -27,6 +25,10 @@ class KamigoController < ApplicationController
   			# 回應 200
   			head :ok
 	end 
+	def test
+		p test
+	end
+
 	def eat
 		 render plain: "eat!"
 	end

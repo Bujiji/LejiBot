@@ -11,7 +11,7 @@ class KamigoController < ApplicationController
   			# 設定回覆訊息
  			 message = {
     		type: 'text',
-    		text: t
+    		text: test
   			}
 
  			# 傳送訊息
@@ -27,7 +27,7 @@ class KamigoController < ApplicationController
     		config.channel_token = 'lU4bS1RLsfyHC91MyKiMGDxgKu5bTtkoSd+dzoAGAuoePgWN7ecrMZ1SdojLgP3QFUWU7ufoplhcwM41L96uJgUIzh7OxVK1ddu+udNWnU1kH3CYC03p8NsLntbM0fBEOcp1cApdIJH29GjnqM6rhwdB04t89/1O/w1cDnyilFU='
   }
     end
-	def test.
+	def test
 		return 't'
 	end
 

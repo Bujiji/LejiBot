@@ -3,23 +3,27 @@ class KamigoController < ApplicationController
 	protect_from_forgery with: :null_session
 	def webhook
   
-  			# 取得 reply token
-  			reply_token = params['events'][0]['replyToken']
-
-
-
   			# 設定回覆訊息
- 			 message = {
-    		type: 'text',
-    		text: test
-  			}
+ 			 reply_text = "success"
 
  			# 傳送訊息
-  			response = line.reply_message(reply_token, message)
+  			response = reply_to_line(reply_text)
     
   			# 回應 200
   			head :ok
 	end 
+	def reply_to_line(reply_text)
+		# 取得 reply token
+  			reply_token = params['events'][0]['replyToken']
+  		# set up the message
+  		message = {
+    		type: 'text',
+    		text: reply_text
+  		}
+  		#send message
+  			line.reply_message(reply_token,message)	
+
+  	end		
 	def line
 				 # Line Bot API 物件初始化
 			@line ||= Line::Bot::Client.new { |config|

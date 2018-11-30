@@ -13,7 +13,8 @@ class KamigoController < ApplicationController
   			head :ok
 	end 
 	def receive_text
-			params['events'][0]['message']['text']#unless message.nil?
+			params['events'][0]['message']['text']
+			message['text'] unless message.nil?
 	end
 	def keyword_reply(receive_text)
 		#學習紀錄表
@@ -29,7 +30,7 @@ class KamigoController < ApplicationController
 		# 取得 reply token
   			reply_token = params['events'][0]['replyToken']
   		# set up the message
-  		message = {
+  		mesbasage = {
     		type: 'text',
     		text: reply_text
   		}

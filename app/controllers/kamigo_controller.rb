@@ -8,10 +8,7 @@ class KamigoController < ApplicationController
 
  			# 傳送訊息
   			response = reply_to_line(reply_text)
-  			p ========================
-  			p reply_text
-  			p =======================
-    
+  			
   			# 回應 200
   			head :ok
 	end 

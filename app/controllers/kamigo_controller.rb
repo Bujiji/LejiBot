@@ -1,4 +1,5 @@
 class KamigoController < ApplicationController
+	protect_from_forgery with: :null_session
 	def eat
 		 render plain: "eat!"
 	end
@@ -30,5 +31,8 @@ class KamigoController < ApplicationController
 	end
 	def chinese_to_korean(message)
 		"#{message}由~"
+	end
+	def webhook
+		head :ok
 	end
 end

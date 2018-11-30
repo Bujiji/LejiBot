@@ -4,7 +4,7 @@ class KamigoController < ApplicationController
 	def webhook
   
   			# 設定回覆訊息
- 			 reply_text = "success"
+ 			 reply_text = keyword_reply(receive_text)
 
  			# 傳送訊息
   			response = reply_to_line(reply_text)
@@ -12,6 +12,12 @@ class KamigoController < ApplicationController
   			# 回應 200
   			head :ok
 	end 
+	def receive_text
+			params['events'][0]['message']['text']
+	end
+	def keyword_reply(receive_text)
+		receive_text
+	end	
 	def reply_to_line(reply_text)
 		# 取得 reply token
   			reply_token = params['events'][0]['replyToken']

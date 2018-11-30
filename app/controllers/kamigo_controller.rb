@@ -11,6 +11,10 @@ class KamigoController < ApplicationController
   			# 取得 reply token
   			reply_token = params['events'][0]['replyToken']
 
+  			p "================="
+  			p reply_token
+  			p "================="
+
   			# 設定回覆訊息
  			 message = {
     		type: 'text',
@@ -55,7 +59,5 @@ class KamigoController < ApplicationController
 	def chinese_to_korean(message)
 		"#{message}由~"
 	end
-	def webhook
-		head :ok
-	end
+
 end

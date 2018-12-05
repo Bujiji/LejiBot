@@ -18,12 +18,12 @@ class KamigoController < ApplicationController
 	end
 	def keyword_reply(receive_text)
 		#學習紀錄表
-		keword_mapping = {
+		keyword_mapping = {
 			'QQ' => 'ㄏㄏ' ,
 			'barry' => 'lu'
 		}
 		#查表
-		keword_mapping[receive_text]
+		keyword_mapping[receive_text]
 
 	end	
 	def reply_to_line(reply_text)
@@ -31,7 +31,7 @@ class KamigoController < ApplicationController
 		# 取得 reply token
   		reply_token = params['events'][0]['replyToken']
   		# set up the message
-  		mesasage = {
+  		message = {
     		type: 'text',
     		text: reply_text
   		}

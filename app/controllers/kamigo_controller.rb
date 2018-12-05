@@ -30,7 +30,7 @@ class KamigoController < ApplicationController
 		# 取得 reply token
   			reply_token = params['events'][0]['replyToken']
   		# set up the message
-  		mesbasage = {
+  		mesasage = {
     		type: 'text',
     		text: reply_text
   		}
@@ -40,7 +40,8 @@ class KamigoController < ApplicationController
   	end		
 	def line
 				 # Line Bot API 物件初始化
-			@line ||= Line::Bot::Client.new { |config|
+			return @line unless @line.nil?
+			@line = Line::Bot::Client.new { |config|
 		    config.channel_secret = '85856371f291d9fc9c6013a0d0664fe6'
     		config.channel_token = 'lU4bS1RLsfyHC91MyKiMGDxgKu5bTtkoSd+dzoAGAuoePgWN7ecrMZ1SdojLgP3QFUWU7ufoplhcwM41L96uJgUIzh7OxVK1ddu+udNWnU1kH3CYC03p8NsLntbM0fBEOcp1cApdIJH29GjnqM6rhwdB04t89/1O/w1cDnyilFU='
   }

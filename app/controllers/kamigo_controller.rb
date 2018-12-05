@@ -24,6 +24,7 @@ class KamigoController < ApplicationController
 		}
 		#查表
 		keword_mapping[receive_text]
+		p /////////////////////////////
 	end	
 	def reply_to_line(reply_text)
 		 return nil if reply_text.nil?

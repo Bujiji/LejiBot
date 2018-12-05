@@ -4,24 +4,33 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
 #
-default: &default
-  adapter: postgresql
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
 
+#預設
+default: &default
+  #採用的資料庫
+  adapter: postgresql
+  #頻寬
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  #>5S資料庫不回應則逾時
+  timeout: 5000
+#開發環境(本機)
 development:
+  #採用預設
   <<: *default
+  #更改採用直(覆蓋預設)
   adapter: sqlite3
+  #資料庫路徑(可在專案內找到)
   database: db/development.sqlite3
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
+#測試環境(目前沒有)
 test:
   <<: *default
   adapter: sqlite3
   database: db/test.sqlite3
-
+#發布環境(heroku)
 production:
   <<: *default
   database: ironman

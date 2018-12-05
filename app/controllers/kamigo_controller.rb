@@ -2,9 +2,10 @@ class KamigoController < ApplicationController
 	require 'line/bot'
 	protect_from_forgery with: :null_session
 	def webhook
-  
-  			# 設定回覆訊息
- 			 reply_text = keyword_reply(receive_text)
+  			#學說話
+  			reply_text = learn(receive_text)
+  			# 設定回覆訊息(加入if使其優先低於學習)
+ 			reply_text = keyword_reply(receive_text) if reply_text.nil?
 
  			# 傳送訊息
   			response = reply_to_line(reply_text)
@@ -16,14 +17,33 @@ class KamigoController < ApplicationController
 			message = params['events'][0]['message']
 			message['text'] unless message.nil?
 	end
+	def learn(receive_text)
+		return nil unless receive_text[0..2] == "設定:"
+
+		receive_text = receive_text[3..-1]
+		success_index = receive_text.index(':')
+
+		return nil if success_index.nil?
+		keyword = receive_text[0..success_index-1]
+		message = receive_text[success_index+1 .. -1]
+
+		KeywordMapping.create(keyword: keyword,message: message)
+		'success!'
+	end
 	def keyword_reply(receive_text)
 		#學習紀錄表
-		keyword_mapping = {
-			'QQ' => 'ㄏㄏ' ,
-			'barry' => 'lu'
-		}
+		#keyword_mapping = {
+		#	'QQ' => 'ㄏㄏ' ,
+		#	'barry' => 'lu'
+		#}
 		#查表
-		keyword_mapping[receive_text]
+		#keyword_mapping[receive_text]
+		mapping = KeywordMapping.where(keyword: receive_text).last
+		if mapping.nil?
+			nil
+		else
+			mapping.message
+		end
 
 	end	
 	def reply_to_line(reply_text)

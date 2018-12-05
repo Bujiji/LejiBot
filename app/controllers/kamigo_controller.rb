@@ -13,7 +13,7 @@ class KamigoController < ApplicationController
   			head :ok
 	end 
 	def receive_text
-			params['events'][0]['message']
+			message = params['events'][0]['message']
 			message['text'] unless message.nil?
 	end
 	def keyword_reply(receive_text)
@@ -24,7 +24,7 @@ class KamigoController < ApplicationController
 		}
 		#查表
 		keword_mapping[receive_text]
-		p /////////////////////////////
+
 	end	
 	def reply_to_line(reply_text)
 		 return nil if reply_text.nil?

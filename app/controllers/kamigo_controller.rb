@@ -18,26 +18,20 @@ class KamigoController < ApplicationController
 			message['text'] unless message.nil?
 	end
 	def learn(receive_text)
-		return nil unless receive_text[0..2] == "設定:"
+		return nil unless receive_text[0..2] == '設定:'
 
 		receive_text = receive_text[3..-1]
 		success_index = receive_text.index(':')
 
 		return nil if success_index.nil?
 		keyword = receive_text[0..success_index-1]
-		message = receive_text[success_index+1 .. -1]
+		message = receive_text[success_index+1..-1]
 
 		KeywordMapping.create(keyword: keyword,message: message)
 		'success!'
 	end
 	def keyword_reply(receive_text)
-		#學習紀錄表
-		#keyword_mapping = {
-		#	'QQ' => 'ㄏㄏ' ,
-		#	'barry' => 'lu'
-		#}
-		#查表
-		#keyword_mapping[receive_text]
+		
 		mapping = KeywordMapping.where(keyword: receive_text).last
 		if mapping.nil?
 			nil

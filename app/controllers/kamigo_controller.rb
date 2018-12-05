@@ -5,7 +5,7 @@ class KamigoController < ApplicationController
   			#學說話
   			reply_text = learn(receive_text)
   			# 設定回覆訊息(加入if使其優先低於學習)
- 			reply_text = keyword_reply(receive_text) if reply_text.nil?
+ 			reply_text = keyword_reply(receive_text) #if reply_text.nil?
 
  			# 傳送訊息
   			response = reply_to_line(reply_text)

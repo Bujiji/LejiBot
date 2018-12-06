@@ -7,10 +7,10 @@ class KamigoController < ApplicationController
   			# 關鍵字回復(加入if使其優先低於學習)
  			reply_text = keyword_reply(receive_text) if reply_text.nil?
  			#推齊
- 			#reply_text = echo2(channel_id,receive_text) if reply_text.nil?
+ 			reply_text = echo2(channel_id,receive_text) if reply_text.nil?
  			#記錄對話
- 			#save_to_receive(channel_id,receive_text)
- 			#save_to_reply(channel_id,reply_text)
+ 			save_to_receive(channel_id,receive_text)
+ 			save_to_reply(channel_id,reply_text)
  			# 傳送訊息
   			response = reply_to_line(reply_text)
   			

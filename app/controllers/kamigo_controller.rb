@@ -6,13 +6,42 @@ class KamigoController < ApplicationController
   			reply_text = learn(receive_text)
   			# 設定回覆訊息(加入if使其優先低於學習)
  			reply_text = keyword_reply(receive_text) if reply_text.nil?
-
+ 			#推齊
+ 			reply_text = echo(channel_id,receive_text) if reply_text.nil?
+ 			#記錄對話
+ 			save_to_receive(channel_id,receive_text)
+ 			save_to_reply(channel_id,receive_text)
  			# 傳送訊息
   			response = reply_to_line(reply_text)
   			
   			# 回應 200
   			head :ok
 	end 
+	def channel_id
+		#來源會在params底下的source，若在群組groupid就有值，在聊天室則room有
+		source = params['events'][0]['source']
+		return source['groupId'] unless source['groupId'].nil?
+    	return source['roomId'] unless source['roomId'].nil?
+    	source['userId'] 
+	end	
+	def save_to_receive(channel_id,receive_text)
+		#因為receive_text不一定有值(有可能傳送貼圖)
+		return if receive_text.nil?
+		Receive.create(channel_id: channel_id,text: receive_text)
+	end
+	def save_to_reply(channel_id,receive_text)
+		return if reply_text.nil?
+		Reply.create(channel_id: channel_id,text: reply_text)
+	end
+	def echo(channel_id,receive_text)
+		#如果在channel_id 最近沒人講過receive_text，卡米狗就不回應
+		recent_receive_texts = Receive.where(channel_id:channel_id).last(5)&.pluck(:text)
+		return nil unless receive_text.in? recent_receive_texts
+		#如果在channel_id卡米狗上一句回應是receive_text，卡米狗就不回應
+		last_reply_text = Reply.where(channel_id:channel_id).last&.text
+		return nil if last_reply_text == receive_text
+		receive_text	
+	end	
 	def receive_text
 			message = params['events'][0]['message']
 			message['text'] unless message.nil?
@@ -40,6 +69,9 @@ class KamigoController < ApplicationController
 		end
 
 	end	
+	def echo(receive_text)
+		reply_text = receive_text unless 
+	end
 	def reply_to_line(reply_text)
 		 return nil if reply_text.nil?
 		# 取得 reply token

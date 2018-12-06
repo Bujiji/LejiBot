@@ -3,7 +3,7 @@ class KamigoController < ApplicationController
 	protect_from_forgery with: :null_session
 	def webhook
   			#學說話
-  			reply_text = learn(receive_text)
+  			reply_text = learn(channel_id,receive_text)
   			# 關鍵字回復(加入if使其優先低於學習)
  			reply_text = keyword_reply(channel_id,receive_text) if reply_text.nil?
  			#推齊

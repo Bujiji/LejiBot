@@ -5,7 +5,7 @@ class KamigoController < ApplicationController
   			#學說話
   			reply_text = learn(receive_text)
   			# 關鍵字回復(加入if使其優先低於學習)
- 			reply_text = keyword_reply(receive_text) if reply_text.nil?
+ 			reply_text = keyword_reply(channel_id,receive_text) if reply_text.nil?
  			#推齊
  			reply_text = echo2(channel_id,receive_text) if reply_text.nil?
  			#記錄對話
@@ -39,6 +39,7 @@ class KamigoController < ApplicationController
 		return nil unless receive_text.in? recent_receive_texts
 		#如果在channel_id卡米狗上一句回應是receive_text，卡米狗就不回應
 		last_reply_text = Reply.where(channel_id:channel_id).last&.text
+		#自身所說的最後一句話若=receive則不回應
 		return nil if last_reply_text == receive_text
 		receive_text	
 	end	
@@ -47,6 +48,7 @@ class KamigoController < ApplicationController
 			message = params['events'][0]['message']
 			message['text'] unless message.nil?
 	end
+	#學習(或設定)
 	def learn(receive_text)
 		return nil unless receive_text[0..2] == '設定:'
 
@@ -57,17 +59,14 @@ class KamigoController < ApplicationController
 		keyword = receive_text[0..success_index-1]
 		message = receive_text[success_index+1..-1]
 
-		KeywordMapping.create(keyword: keyword,message: message)
+		KeywordMapping.create(channel_id:channel_id, keyword: keyword,message: message)
 		'success!'
 	end
+	#從資料庫中找到要回應的欄位值
 	def keyword_reply(receive_text)
-		
-		mapping = KeywordMapping.where(keyword: receive_text).last
-		if mapping.nil?
-			nil
-		else
-			mapping.message
-		end
+		message = KeywordMapping.where(channel_id: channel_id,keyword: receive_text).last&.message
+		return message unless message.nil?
+		KeywordMapping.where(keyword: receive_text).last&.message
 
 	end	
 	def reply_to_line(reply_text)

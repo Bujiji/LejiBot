@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  #devise_for :installs
-  #resources :keyword_mappings
+  devise_for :users
+  devise_for :installs
+  resources :keyword_mappings
   get '/kamigo/eat' , to: 'kamigo#eat'
   get '/kamigo/rh' , to: 'kamigo#r_h'	 #request head
   get '/kamigo/rb' , to: 'kamigo#rb'	 #request body

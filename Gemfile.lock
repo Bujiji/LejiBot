@@ -205,7 +205,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   chromedriver-helper
   coffee-rails (~> 4.2)
-  devise
+  devise (~> 4.2)
   duktape
   jbuilder (~> 2.5)
   line-bot-api

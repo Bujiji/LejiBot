@@ -49,7 +49,7 @@ class KamigoController < ApplicationController
 			message['text'] unless message.nil?
 	end
 	#學習(或設定)
-	def learn(receive_text)
+	def learn(channel_id,receive_text)
 		return nil unless receive_text[0..2] == '設定:'
 
 		receive_text = receive_text[3..-1]
@@ -63,7 +63,7 @@ class KamigoController < ApplicationController
 		'success!'
 	end
 	#從資料庫中找到要回應的欄位值
-	def keyword_reply(receive_text)
+	def keyword_reply(channel_id,receive_text)
 		message = KeywordMapping.where(channel_id: channel_id,keyword: receive_text).last&.message
 		return message unless message.nil?
 		KeywordMapping.where(keyword: receive_text).last&.message

@@ -12,13 +12,6 @@
 
 ActiveRecord::Schema.define(version: 2018_12_05_120710) do
 
-  create_table "keyword_mappings", force: :cascade do |t|
-    t.string "keyword"
-    t.string "message"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "keywordmappings", force: :cascade do |t|
     t.string "keyword"
     t.string "message"

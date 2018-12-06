@@ -4,13 +4,13 @@ class KamigoController < ApplicationController
 	def webhook
   			#學說話
   			reply_text = learn(receive_text)
-  			# 設定回覆訊息(加入if使其優先低於學習)
+  			# 關鍵字回復(加入if使其優先低於學習)
  			reply_text = keyword_reply(receive_text) if reply_text.nil?
  			#推齊
- 			reply_text = echo(channel_id,receive_text) if reply_text.nil?
+ 			reply_text = echo2(channel_id,receive_text) if reply_text.nil?
  			#記錄對話
  			save_to_receive(channel_id,receive_text)
- 			save_to_reply(channel_id,receive_text)
+ 			save_to_reply(channel_id,reply_text)
  			# 傳送訊息
   			response = reply_to_line(reply_text)
   			
@@ -29,11 +29,11 @@ class KamigoController < ApplicationController
 		return if receive_text.nil?
 		Receive.create(channel_id: channel_id,text: receive_text)
 	end
-	def save_to_reply(channel_id,receive_text)
+	def save_to_reply(channel_id,reply_text)
 		return if reply_text.nil?
 		Reply.create(channel_id: channel_id,text: reply_text)
 	end
-	def echo(channel_id,receive_text)
+	def echo2(channel_id,receive_text)
 		#如果在channel_id 最近沒人講過receive_text，卡米狗就不回應
 		recent_receive_texts = Receive.where(channel_id:channel_id).last(5)&.pluck(:text)
 		return nil unless receive_text.in? recent_receive_texts
